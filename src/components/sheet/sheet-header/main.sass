@@ -1,0 +1,33 @@
+@import '../../../sass/main'
+
+.sheet__header
+    display: flex
+    justify-content: space-between
+    padding: 20px 10px
+    
+.sheet__header-main, .sheet__header-info
+    display: flex
+    align-items: center
+
+.sheet__header-id
+    @include font (1rem)
+    margin-right: 60px
+
+.sheet__header-name
+    margin: 0
+    @include font (1rem)
+
+.sheet__header-list-info
+    display: flex
+
+.sheet__header-item-info
+    width: 18px
+    margin-right: 25px
+    @include font (1rem)
+    &:first-child, &:nth-child(4)
+        margin-right: 50px
+    &:nth-child(5)
+        width: 42px
+    &:last-child
+        width: 58px
+        margin-right: 0
