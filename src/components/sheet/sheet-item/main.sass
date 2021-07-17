@@ -10,9 +10,10 @@
     align-items: center
 
 .sheet__id
+    width: 30px
     @include font (1rem)
     font-weight: 700
-    margin-right: 60px
+    margin-right: 50px
 
 .sheet__img
     width: 25px
@@ -24,7 +25,7 @@
     @include font (1rem)
     font-weight: 700
 
-.steet__list-history-game, .sheet__list-text-info
+.sheet__list-history-game, .sheet__list-text-info
     display: flex
 
 .sheet__item-text-info
@@ -34,9 +35,9 @@
     &:first-child, &:nth-child(4)
         margin-right: 50px
     &:nth-child(5)
-        width: 42px
+        width: 50px
        
-.steet__item-history-game
+.sheet__item-history-game
     width: 8px
     height: 8px
     border-radius: 50%
@@ -44,3 +45,9 @@
     margin-right: 2px
     &:last-child
         margin: 0
+
+.red
+    background: $red
+
+.green
+    background: $green
