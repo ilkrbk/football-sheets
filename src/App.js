@@ -90,7 +90,7 @@ function App() {
 					<Tab click={tabClick} stageId={stageId} activeTab={activeTab} type={tab.type} key={tab.id} text={tab.text}/>
 				))}
 			</ul>
-			{!isError && loader
+			{loader
 				?<Loader type="spinner-circle" bgColor={"#015699"} size={50} />
 				:<Sheet data={dataObj}/>
 			}
