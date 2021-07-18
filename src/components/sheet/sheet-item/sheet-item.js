@@ -23,7 +23,7 @@ export const SheetItem = ({item}) => {
                     <li className="sheet__item-text-info">{item.matchesWon}</li>
                     <li className="sheet__item-text-info">{item.matchesDraw}</li>
                     <li className="sheet__item-text-info">{item.matchesLost}</li>
-                    <li className="sheet__item-text-info">{item.goalsScored}-{item.goalsConceded}</li>
+                    <li className="sheet__item-text-info">{item.goalsScored - item.goalsConceded}</li>
                     <li className="sheet__item-text-info">{item.points}</li>
                 </ul>
                 <ul className="sheet__list-history-game">
