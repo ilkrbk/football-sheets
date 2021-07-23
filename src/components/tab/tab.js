@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 
-export const Tab = ({text, click, type, activeTab, stageId}) => {
-    if (activeTab === type) {
-        return <li onClick={() => (click(type, stageId))} className="tab__item tab__item-active">{text}</li>
-    }
-    return <li onClick={() => (click(type, stageId))} className="tab__item">{text}</li>
-}
+export const Tab = ({ click, tab, activeTab }) => {
+  return (
+    <li onClick={() => click(tab)} className={`tab__item ${activeTab === tab ? "tab__item-active" : ""}`}>
+      {tab}
+    </li>
+  );
+};
