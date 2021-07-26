@@ -1,16 +1,18 @@
 import React from "react";
-import { SheetHeader } from "./sheet-header/sheet-header";
-import { SheetItem } from "./sheet-item/sheet-item";
+import { SheetHeader } from "./sheet-header";
+import { SheetGroup } from "./sheet-group";
+import styled from "@emotion/styled";
 
-export const Sheet = ({ data }) => {
-  return (
-    <section className="sheet">
-      <SheetHeader />
-      <ul className="sheet__list">
-        {data.map(item => (
-          <SheetItem key={item.rank} item={item} />
-        ))}
-      </ul>
-    </section>
-  );
-};
+const SheetWrap = styled.section`
+  margin-top: 50px;
+  padding: 0 45px 0 30px;
+`;
+
+export const Sheet = ({ data }) => (
+  <SheetWrap>
+    <SheetHeader />
+    {data.map((array, index) => (
+      <SheetGroup data={array} isTitle={data.length !== 1} key={index} />
+    ))}
+  </SheetWrap>
+);
