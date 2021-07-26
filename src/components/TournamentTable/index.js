@@ -1,70 +1,97 @@
 import React, { useState, useEffect } from "react";
+import { GettingStages, GettingGroupsOfClubs } from "../requests/services";
 import { ErrorBoundary } from "../error/error";
+import { useTheme } from "@emotion/react";
 import { Sheet } from "../sheet/sheet";
 import { Tab } from "../tab/tab";
 import Loader from "react-js-loader";
-import axios from "axios";
+import styled from "@emotion/styled";
 
 const tabs = ["standing", "home", "away"];
 
-export const TournamentTable = ({ id, seasonId }) => {
-  const [tournamentClubsList, setTournamentClubsList] = useState();
-  const [loader, setLoader] = useState(true);
+const PositionLoader = styled.div`
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+const Tournament = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background: ${({ theme }) => theme.colors.mainBackgroung};
+`;
+
+const TabsList = styled.ul`
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.tabs};
+`;
+
+export const TournamentTable = ({ tournamentId, seasonId }) => {
+  const [tournamentGroupsOfClubsList, setTournamentGroupsOfClubsList] = useState();
+  const [isLoader, setIsLoader] = useState(true);
   const [activeTab, setActiveTab] = useState("standing");
   const [isError, setIsError] = useState(false);
-  const [stageId, setStageId] = useState();
+  const [stages, setStages] = useState();
 
-  const tabClick = (type, stageId) => {
-    try {
-      setLoader(true);
-      axios
-        .get(`https://ss2.tjekscores.dk/tournaments/${id}/standings?&addResults=true&resultsLimit=6&type=${type}&form=last&stageId=${stageId}`)
-        .then(response => setTournamentClubsList(response.data.sort((a, b) => (a.points > b.points ? -1 : 1))))
-        .catch(error => {
-          throw new Error(`Error ${error}`);
-        })
-        .finally(() => setLoader(false));
-    } catch {
-      setIsError(true);
-    }
-  };
-
-  const GettingStageIDFromRequests = () => {
-    try {
-      axios
-        .get(`https://ss2.tjekscores.dk/tournaments/${id}/season?seasonId=${seasonId}`)
-        .then(response => {
-          setStageId(response.data.season.stages[0].id);
-        })
-        .catch(error => {
-          throw new Error(`Error ${error}`);
-        });
-    } catch {
-      setIsError(true);
-    }
+  const handleTabClick = activeTab => () => {
+    setActiveTab(activeTab);
   };
 
   useEffect(() => {
-    tabClick(activeTab === tabs[0] ? "" : activeTab, stageId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, stageId]);
+    setIsLoader(true);
+    async function fetch() {
+      try {
+        const responseStageId = await GettingStages(tournamentId, seasonId);
+        await setStages(responseStageId);
+      } catch (error) {
+        setIsError(true);
+      }
+    }
+    fetch();
+  }, [tournamentId, seasonId]);
 
   useEffect(() => {
-    GettingStageIDFromRequests();
+    async function fetch() {
+      try {
+        setIsLoader(true);
+        const response = await GettingGroupsOfClubs(tournamentId, activeTab === tabs[0] ? "" : activeTab, stages);
+        setTournamentGroupsOfClubsList(response);
+        setIsLoader(false);
+      } catch {
+        setIsError(true);
+      }
+    }
+    if (stages) {
+      fetch();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeTab, stages]);
+
+  const SheetLoader = () => {
+    const theme = useTheme();
+    return (
+      <PositionLoader>
+        <Loader type="spinner-circle" bgColor={theme.colors.text} size={70} />
+      </PositionLoader>
+    );
+  };
 
   if (isError) {
     return <ErrorBoundary />;
   }
   return (
-    <div className="App">
-      <ul className="tab__list">
+    <Tournament>
+      <TabsList>
         {tabs.map(tab => (
-          <Tab click={setActiveTab} tab={tab} key={tab} activeTab={activeTab} />
+          <Tab click={handleTabClick} tab={tab} key={tab} activeTab={activeTab} />
         ))}
-      </ul>
-      {loader ? <Loader type="spinner-circle" bgColor={"#015699"} size={50} /> : <Sheet data={tournamentClubsList} />}
-    </div>
+      </TabsList>
+      {isLoader ? <SheetLoader /> : <Sheet data={tournamentGroupsOfClubsList} />}
+    </Tournament>
   );
 };
