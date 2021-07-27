@@ -1,6 +1,6 @@
 import React from "react";
-import { SheetHeader } from "./sheet-header";
-import { SheetGroup } from "./sheet-group";
+import { SheetHeader } from "./sheetHeader";
+import { SheetGroup } from "./sheetGroup";
 import styled from "@emotion/styled";
 
 const SheetWrap = styled.section`

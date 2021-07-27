@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { GettingStages, GettingGroupsOfClubs } from "../requests/services";
-import { ErrorBoundary } from "../error/error";
+import { gettingStages, gettingGroupsOfClubs } from "../services/ss2";
+import { ErrorBoundary } from "../helpers/error";
 import { useTheme } from "@emotion/react";
-import { Sheet } from "../sheet/sheet";
-import { Tab } from "../tab/tab";
+import { Sheet } from "./table/sheet";
+import { Tab } from "./tab/tab";
 import Loader from "react-js-loader";
 import styled from "@emotion/styled";
 
@@ -31,7 +31,7 @@ const TabsList = styled.ul`
   background: ${({ theme }) => theme.colors.tabs};
 `;
 
-export const TournamentTable = ({ tournamentId, seasonId }) => {
+export const TournamentTable = ({id}) => {
   const [tournamentGroupsOfClubsList, setTournamentGroupsOfClubsList] = useState();
   const [isLoader, setIsLoader] = useState(true);
   const [activeTab, setActiveTab] = useState("standing");
@@ -42,32 +42,28 @@ export const TournamentTable = ({ tournamentId, seasonId }) => {
     setActiveTab(activeTab);
   };
 
-  useEffect(() => {
-    setIsLoader(true);
-    async function fetch() {
-      try {
-        const responseStageId = await GettingStages(tournamentId, seasonId);
-        await setStages(responseStageId);
-      } catch (error) {
-        setIsError(true);
-      }
+  // eslint-disable-next-line
+  useEffect(async () => {
+    try {
+      setIsLoader(true);
+      const responseStageId = await gettingStages(id.value.tournamentId, id.value.seasonId);
+      await setStages(responseStageId);
+    } catch (error) {
+      setIsError(true);
     }
-    fetch();
-  }, [tournamentId, seasonId]);
+  }, [id]);
 
-  useEffect(() => {
-    async function fetch() {
-      try {
+  // eslint-disable-next-line
+  useEffect(async () => {
+    try {
+      if (stages) {
         setIsLoader(true);
-        const response = await GettingGroupsOfClubs(tournamentId, activeTab === tabs[0] ? "" : activeTab, stages);
+        const response = await gettingGroupsOfClubs(id.value.tournamentId, activeTab === tabs[0] ? "" : activeTab, stages);
         setTournamentGroupsOfClubsList(response);
         setIsLoader(false);
-      } catch {
-        setIsError(true);
       }
-    }
-    if (stages) {
-      fetch();
+    } catch {
+      setIsError(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, stages]);

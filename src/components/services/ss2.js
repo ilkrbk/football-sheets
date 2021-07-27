@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const GettingGroupsOfClubs = async (tournamentId, type, stages) => {
+export const gettingGroupsOfClubs = async (tournamentId, type, stages) => {
   const GroupsOfClubs = [];
   for (let i = 0; i < stages.length; i++) {
     if (!stages[i].isCup) {
@@ -15,7 +15,7 @@ export const GettingGroupsOfClubs = async (tournamentId, type, stages) => {
   return GroupsOfClubs;
 };
 
-export const GettingStages = async (tournamentId, seasonId) => {
+export const gettingStages = async (tournamentId, seasonId) => {
   const response = await axios.get(`https://ss2.tjekscores.dk/tournaments/${tournamentId}/season?seasonId=${seasonId}`).catch(() => {
     throw new Error(Error);
   });

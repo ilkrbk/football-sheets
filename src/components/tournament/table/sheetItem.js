@@ -69,7 +69,7 @@ const CircleOfResultGame = styled.li`
 `;
 
 export const SheetItem = ({ item, index }) => {
-  const CharacteristicsTeamArray = [item.matchesPlayed, item.matchesWon, item.matchesDraw, item.matchesLost, item.goalsScored - item.goalsConceded, item.points];
+  const сharacteristicsTeamArray = [item.matchesPlayed, item.matchesWon, item.matchesDraw, item.matchesLost, item.goalsScored - item.goalsConceded, item.points];
   const teamName = () => {
     if (item.teamId === item.results[0].homeId) {
       return item.results[0].homeName;
@@ -86,7 +86,7 @@ export const SheetItem = ({ item, index }) => {
       </div>
       <div>
         <ul>
-          {CharacteristicsTeamArray.map((element, index) => (
+          {сharacteristicsTeamArray.map((element, index) => (
             <ItemOfCharacteristicsTeam key={index}>{element}</ItemOfCharacteristicsTeam>
           ))}
         </ul>

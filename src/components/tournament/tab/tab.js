@@ -12,6 +12,7 @@ const TabElement = styled.li`
   border-bottom: 1px solid ${({ theme }) => theme.colors.tabLine};
   position: relative;
   text-transform: capitalize;
+  cursor: pointer;
   &::after {
     content: "";
     position: absolute;

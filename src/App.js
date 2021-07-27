@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { TournamentTable } from "./components/TournamentTable";
+import { TournamentTable } from "./components/tournament";
 import { ThemeProvider } from "@emotion/react";
 import { GlobalStyle } from "./styled/global";
 import { LightTheme, DarkTheme } from "./styled/theme";
 import styled from "@emotion/styled";
+import Select from "react-select";
+
+const options = [
+  { value: {tournamentId: 46, seasonId: 15429}, label: 'Superliga 2020/2021' },
+  { value: {tournamentId: 47, seasonId: 15382}, label: 'Premier League' },
+  { value: {tournamentId: 42, seasonId: 15237}, label: 'CL 2020/2021' },
+  { value: {tournamentId: 73, seasonId: 15238}, label: 'EL' },
+];
 
 const Switch = styled.button`
   position: fixed;
@@ -17,6 +25,7 @@ const Switch = styled.button`
   display: flex;
   transition: all ease-in-out 0.3s;
   justify-content: ${({ theme }) => theme.position.switch};
+  cursor: pointer;
 `;
 
 const SwitchCircle = styled.span`
@@ -27,18 +36,37 @@ const SwitchCircle = styled.span`
   background: ${({ theme }) => theme.colors.text};
 `;
 
+const SelectStyle = styled.div`
+  display: flex;
+  padding: 20px 100px;
+  font-family: "Roboto";
+  font-size: 1rem;
+  color: #015699;
+  > div {
+    width: 100%;
+  }
+`;
+
+
 function App() {
   const [isLightTheme, setIsLightTheme] = useState(true);
-
+  const [selectedOption, setSelectedOption] = useState(options[0]);
   const toggle = () => setIsLightTheme(!isLightTheme);
 
   return (
     <div className="App">
       <ThemeProvider theme={isLightTheme ? LightTheme : DarkTheme}>
-        <TournamentTable id={46} seasonId={15429} />
+        <TournamentTable id={selectedOption}/>
         <Switch onClick={toggle}>
           <SwitchCircle />
         </Switch>
+        <SelectStyle>
+          <Select
+            defaultValue={selectedOption}
+            onChange={setSelectedOption}
+            options={options}
+          />
+        </SelectStyle>
         <GlobalStyle />
       </ThemeProvider>
     </div>

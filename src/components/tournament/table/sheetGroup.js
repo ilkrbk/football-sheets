@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { SheetItem } from "./sheet-item";
+import React, { useState } from "react";
+import { SheetItem } from "./sheetItem";
 import styled from "@emotion/styled";
 
 const CollapseBtn = styled.button`
@@ -8,6 +8,7 @@ const CollapseBtn = styled.button`
   display: flex;
   align-items: center;
   padding: 10px 0;
+  cursor: pointer;
 
   > i {
     width: 10px;
@@ -33,10 +34,10 @@ export const SheetGroup = ({ data, isTitle }) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <Fragment>
+    <>
       {isTitle && (
         <CollapseBtn onClick={toggle}>
-          <i className={`fas fa-caret-${isOpen ? "down" : "right"}`}/>
+          <i className={`fas fa-caret-${isOpen ? "down" : "right"}`} />
           <h3>{data[0].groupName}</h3>
         </CollapseBtn>
       )}
@@ -47,6 +48,6 @@ export const SheetGroup = ({ data, isTitle }) => {
           ))}
         </CollapseList>
       )}
-    </Fragment>
+    </>
   );
 };
