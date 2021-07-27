@@ -36,7 +36,7 @@ export const SheetGroup = ({ data, isTitle }) => {
     <Fragment>
       {isTitle && (
         <CollapseBtn onClick={toggle}>
-          <i className={`fas fa-caret-${isOpen ? "down" : "right"}`}></i>
+          <i className={`fas fa-caret-${isOpen ? "down" : "right"}`}/>
           <h3>{data[0].groupName}</h3>
         </CollapseBtn>
       )}
